@@ -1,0 +1,67 @@
+import tkinter as tk
+
+def calculate_calories():
+    try:
+        weight = float(weight_entry.get())
+        height = float(height_entry.get())
+        age = int(age_entry.get())
+        gender = gender_var.get()
+        activity_level = activity_var.get()
+
+        if gender == "Male":
+            bmr = 10 * weight + 6.25 * height - 5 * age + 5
+        else:
+            bmr = 10 * weight + 6.25 * height - 5 * age - 161
+
+        if activity_level == "Sedentary":
+            calories = bmr * 1.2
+        elif activity_level == "Lightly Active":
+            calories = bmr * 1.375
+        elif activity_level == "Moderately Active":
+            calories = bmr * 1.55
+        elif activity_level == "Very Active":
+            calories = bmr * 1.725
+        else:
+            calories = bmr * 1.9
+
+        result_label.config(text=f"You should consume {calories:.2f} calories per day.")
+    except ValueError:
+        result_label.config(text="Please enter valid input.")
+
+# Create main window
+root = tk.Tk()
+root.title("Calorie Calculator")
+
+# Labels
+tk.Label(root, text="Weight (kg):").grid(row=0, column=0)
+tk.Label(root, text="Height (cm):").grid(row=1, column=0)
+tk.Label(root, text="Age:").grid(row=2, column=0)
+tk.Label(root, text="Gender:").grid(row=3, column=0)
+tk.Label(root, text="Activity Level:").grid(row=4, column=0)
+
+# Entry widgets
+weight_entry = tk.Entry(root)
+height_entry = tk.Entry(root)
+age_entry = tk.Entry(root)
+gender_var = tk.StringVar(root)
+gender_var.set("Male")
+gender_dropdown = tk.OptionMenu(root, gender_var, "Male", "Female")
+activity_var = tk.StringVar(root)
+activity_var.set("Sedentary")
+activity_dropdown = tk.OptionMenu(root, activity_var, "Sedentary", "Lightly Active", "Moderately Active", "Very Active", "Extra Active")
+
+weight_entry.grid(row=0, column=1)
+height_entry.grid(row=1, column=1)
+age_entry.grid(row=2, column=1)
+gender_dropdown.grid(row=3, column=1)
+activity_dropdown.grid(row=4, column=1)
+
+# Button to calculate calories
+calculate_button = tk.Button(root, text="Calculate", command=calculate_calories)
+calculate_button.grid(row=5, columnspan=2)
+
+# Result label
+result_label = tk.Label(root, text="")
+result_label.grid(row=6, columnspan=2)
+
+root.mainloop()
